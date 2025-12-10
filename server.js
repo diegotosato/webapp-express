@@ -5,6 +5,8 @@ const PORT = 3000
 
 //body parser
 app.use(express.json())
+//register static assets
+app.use(express.static('public'))
 
 //put server on listening
 app.listen(PORT, () => {
