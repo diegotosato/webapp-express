@@ -1,12 +1,11 @@
 const express = require('express')
 const router = express.Router()
 
-router.get('/', (req, res) => {
-    res.send('Show all movies')
-})
+//import controller
+const moviesController = require('../controllers/moviesController')
 
-router.get('/:id', (req, res) => {
-    res.send('Show the movie with id: ' + req.params.id)
-})
+router.get('/', moviesController.index)
+
+router.get('/:id', moviesController.show)
 
 module.exports = router
