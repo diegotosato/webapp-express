@@ -14,7 +14,20 @@ const index = (req, res) => {
 }
 
 const show = (req, res) => {
-    res.send('Show the movie with id: ' + req.params.id)
+
+    //keep id
+    const id = Number(req.params.id)
+
+    //prepare first query
+    const movieSql = "SELECT * FROM movies WHERE id = ?"
+
+    //connect first query, check an error server side, manage results lenght, isolate into a variable the result
+    connection.query(movieSql, [id], (err, movieResult) => {
+        if (err) return err.status(500).json({ error: true, message: err.message })
+        if (movieResult.length === 0) return res.status(404).json({ error: true, message: 'Movie not found' })
+
+        const movie = movieResult[0]
+    })
 }
 
 
