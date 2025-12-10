@@ -1,9 +1,20 @@
 const mysql2 = require('mysql2')
 const connection = mysql2.createConnection({
-    host: process.env.HOST,
-    user: process.env.USER,
-    password: process.env.PASSWORD,
-    database: process.env.DATABASE
+    // host: process.env.HOST,
+    // user: process.env.USER,
+    // password: process.env.PASSWORD,
+    // database: process.env.DATABASE
+    host: 'localhost',
+    user: 'root',
+    password: 'Wacestern22!',
+    database: 'webapp-express'
+})
+
+connection.connect((err) => {
+    if (err) {
+        throw err.message
+    }
+    console.log('Connection to the DB successfull!');
 })
 
 module.exports = connection

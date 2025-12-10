@@ -3,6 +3,9 @@ const express = require('express')
 const app = express()
 const PORT = 3000
 
+//import connection database
+const connection = require('./database/connection')
+
 //body parser
 app.use(express.json())
 //register static assets
