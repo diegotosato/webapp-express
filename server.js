@@ -6,6 +6,9 @@ const PORT = 3000
 //import connection database
 const connection = require('./database/connection')
 
+//import routes
+const moviesRouter = require('./routes/movies')
+
 //body parser
 app.use(express.json())
 //register static assets
@@ -20,3 +23,6 @@ app.listen(PORT, () => {
 app.get('/', (req, res) => {
     res.send('My movies reviews API server')
 })
+
+
+app.use('/api/movies', moviesRouter)
