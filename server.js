@@ -8,6 +8,7 @@ const moviesRouter = require('./routes/movies')
 
 //import middlewares
 const handleError = require('./middlewares/handleError')
+const notFound = require('./middlewares/notFound')
 
 //body parser
 app.use(express.json())
@@ -30,3 +31,4 @@ app.use('/api/movies', moviesRouter)
 
 //use midllewares
 app.use(handleError)
+app.use(notFound)
