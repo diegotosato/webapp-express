@@ -21,12 +21,25 @@ const show = (req, res) => {
     //prepare first query
     const movieSql = "SELECT * FROM movies WHERE id = ?"
 
+    //prepare second query
+    const reviewSql = "SELECT * FROM reviews JOIN movies ON reviews.movie_id = movies.id WHERE movies.id = ?"
+
     //connect first query, check an error server side, manage results lenght, isolate into a variable the result
     connection.query(movieSql, [id], (err, movieResult) => {
         if (err) return err.status(500).json({ error: true, message: err.message })
         if (movieResult.length === 0) return res.status(404).json({ error: true, message: 'Movie not found' })
 
         const movie = movieResult[0]
+
+        //connect second query, check an error server side, add reviews key to movie object, return the json film
+        connection.query(reviewSql, [id], (err, reviewResult) => {
+            if (err) return err.status(500).json({ error: true, message: err.message })
+
+            movie.reviews = reviewResult
+
+            res.json(movie)
+        })
+
     })
 }
 
