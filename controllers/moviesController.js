@@ -22,7 +22,7 @@ const show = (req, res) => {
     const movieSql = "SELECT * FROM movies WHERE id = ?"
 
     //prepare second query
-    const reviewSql = "SELECT * FROM reviews JOIN movies ON reviews.movie_id = movies.id WHERE movies.id = ?"
+    const reviewSql = "SELECT reviews.* FROM reviews JOIN movies ON reviews.movie_id = movies.id WHERE movies.id = ?"
 
     //connect first query, check an error server side, manage results lenght, isolate into a variable the result
     connection.query(movieSql, [id], (err, movieResult) => {
