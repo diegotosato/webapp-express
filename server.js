@@ -3,10 +3,11 @@ const express = require('express')
 const app = express()
 const PORT = 3000
 
-
-
 //import routes
 const moviesRouter = require('./routes/movies')
+
+//import middlewares
+const handleError = require('./middlewares/handleError')
 
 //body parser
 app.use(express.json())
@@ -25,3 +26,7 @@ app.get('/', (req, res) => {
 
 
 app.use('/api/movies', moviesRouter)
+
+
+//use midllewares
+app.use(handleError)
