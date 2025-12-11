@@ -15,7 +15,7 @@ const notFound = require('./middlewares/notFound')
 
 //set-up cors
 app.use(cors({
-    origin: 'http://localhost:5173/'
+    origin: 'http://localhost:5173'
 }))
 
 //body parser
