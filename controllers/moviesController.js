@@ -66,7 +66,7 @@ const storeReview = (req, res) => {
 
     const sql = "INSERT INTO reviews (movieId, name, vote, text) VALUES (?, ?, ?, ?)"
 
-    connection.query(sql, [title, director, abstract, genre, release_year, image], (err, results) => {
+    connection.query(sql, [movieId, name, vote, text], (err, results) => {
         if (err) return err.status(500).json({ error: true, message: err.message })
         res.status(201).json({ message: "Review created", movieId: results.insertId })
     })
@@ -76,6 +76,5 @@ const storeReview = (req, res) => {
 module.exports = {
     index,
     show,
-    store,
-    storeReview
+    store
 }
