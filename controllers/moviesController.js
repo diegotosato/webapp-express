@@ -45,17 +45,19 @@ const show = (req, res) => {
 
 
 const store = (req, res) => {
-    const { title, director, abstract, genre, release_year } = req.body
-    const image = req.file ? req.file.filename : null
+
+    const { title, director, genre, release_year, abstract } = req.body
+    const image = req.file ? req.filename : null
 
     const imagePath = `http://localhost:3000/uploads/${image}`
+    console.log(title, director, genre, release_year, abstract, image);
 
-    const sql = "INSERT INTO movies (title, director, abstract, genre, release_year, image) VALUES (?, ?, ?, ?, ?, ?)"
-
-    connection.query(sql, [title, director, abstract, genre, release_year, image], (err, results) => {
-        if (err) return err.status(500).json({ error: true, message: err.message })
+    const storeMovieSql = "INSERT INTO movies (title, director, genre, release_year, abstract, image) VALUES (?, ?, ?, ?, ?, ?)"
+    connection.query(storeMovieSql, [title, director, genre, release_year, abstract, imagePath], (err, results) => {
+        if (err) return res.status(500).json({ error: true, message: err.message })
         res.status(201).json({ message: "Movie created", movieId: results.insertId })
     })
+
 
 }
 
