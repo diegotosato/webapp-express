@@ -45,14 +45,28 @@ const show = (req, res) => {
 
 
 const store = (req, res) => {
-    const { name, vote, text } = req.body
+    const { title, director, abstract, genre, release_year } = req.body
     const image = req.file ? req.file.filename : null
 
     const imagePath = `http://localhost:3000/uploads/${image}`
 
-    const sql = "INSERT INTO books (name, vote, text, image) VALUES (?, ?, ?, ?)"
+    const sql = "INSERT INTO movies (title, director, abstract, genre, release_year, image) VALUES (?, ?, ?, ?, ?, ?)"
 
-    connection.query(sql, [name, vote, text, image], (err, results) => {
+    connection.query(sql, [title, director, abstract, genre, release_year, image], (err, results) => {
+        if (err) return err.status(500).json({ error: true, message: err.message })
+        res.status(201).json({ message: "Movie created", movieId: results.insertId })
+    })
+
+}
+
+
+const storeReview = (req, res) => {
+    const movieId = Number(req.params.id)
+    const { name, vote, text } = req.body
+
+    const sql = "INSERT INTO reviews (movieId, name, vote, text) VALUES (?, ?, ?, ?)"
+
+    connection.query(sql, [title, director, abstract, genre, release_year, image], (err, results) => {
         if (err) return err.status(500).json({ error: true, message: err.message })
         res.status(201).json({ message: "Review created", movieId: results.insertId })
     })
@@ -62,5 +76,6 @@ const store = (req, res) => {
 module.exports = {
     index,
     show,
-    store
+    store,
+    storeReview
 }
