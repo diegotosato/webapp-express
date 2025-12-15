@@ -44,7 +44,23 @@ const show = (req, res) => {
 }
 
 
+const store = (req, res) => {
+    const { name, vote, text } = req.body
+    const image = req.file ? req.file.filename : null
+
+    const imagePath = `http://localhost:3000/uploads/${image}`
+
+    const sql = "INSERT INTO books (name, vote, text, image) VALUES (?, ?, ?, ?)"
+
+    connection.query(sql, [name, vote, text, image], (err, results) => {
+        if (err) return err.status(500).json({ error: true, message: err.message })
+        res.status(201).json({ message: "Review created", movieId: results.insertId })
+    })
+
+}
+
 module.exports = {
     index,
-    show
+    show,
+    store
 }
