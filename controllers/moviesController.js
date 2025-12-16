@@ -47,7 +47,7 @@ const show = (req, res) => {
 const store = (req, res) => {
 
     const { title, director, genre, release_year, abstract } = req.body
-    const image = req.file ? req.filename : null
+    const image = req.file ? req.file.filename : null
 
     const imagePath = `http://localhost:3000/uploads/${image}`
     console.log(title, director, genre, release_year, abstract, image);
@@ -55,7 +55,7 @@ const store = (req, res) => {
     const storeMovieSql = "INSERT INTO movies (title, director, genre, release_year, abstract, image) VALUES (?, ?, ?, ?, ?, ?)"
     connection.query(storeMovieSql, [title, director, genre, release_year, abstract, imagePath], (err, results) => {
         if (err) return res.status(500).json({ error: true, message: err.message })
-        res.status(201).json({ message: "Movie created", movieId: results.insertId })
+        res.status(201).json({ message: "Movie created", id: results.insertId })
     })
 
 
