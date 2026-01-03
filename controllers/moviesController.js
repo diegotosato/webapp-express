@@ -75,9 +75,43 @@ const storeReview = (req, res) => {
 
 }
 
+const destroy = (req, res) => {
+    const id = Number(req.params.id)
+
+    // first quory to delete reviews
+    const deleteReviewsSql = "DELETE FROM reviews WHERE movie_id = ?"
+
+    // second query to delete movie
+    const deleteMovieSql = "DELETE FROM movies WHERE id = ?"
+
+    // delete reviews
+    connection.query(deleteReviewsSql, [id], (err) => {
+        if (err) {
+            return res.status(500).json({ error: true, message: err.message })
+        }
+
+        // delete movie
+        connection.query(deleteMovieSql, [id], (err, result) => {
+            if (err) {
+                return res.status(500).json({ error: true, message: err.message })
+            }
+
+            // manage affected rows result
+            if (result.affectedRows === 0) {
+                return res.status(404).json({ error: true, message: 'Movie not found' })
+            }
+
+            res.json({ message: 'Movie deleted successfully' })
+        })
+    })
+}
+
+
+
 module.exports = {
     index,
     show,
     store,
-    storeReview
+    storeReview,
+    destroy
 }
