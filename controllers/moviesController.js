@@ -75,6 +75,44 @@ const storeReview = (req, res) => {
 
 }
 
+
+const update = (req, res) => {
+    const id = Number(req.params.id)
+
+    const { title, director, genre, release_year, abstract } = req.body
+    const image = req.file ? `http://localhost:3000/uploads/${req.file.filename}` : null
+
+    let fields = []
+    let values = []
+
+    if (title) { fields.push("title = ?"); values.push(title) }
+    if (director) { fields.push("director = ?"); values.push(director) }
+    if (genre) { fields.push("genre = ?"); values.push(genre) }
+    if (release_year) { fields.push("release_year = ?"); values.push(release_year) }
+    if (abstract) { fields.push("abstract = ?"); values.push(abstract) }
+    if (image) { fields.push("image = ?"); values.push(image) }
+
+    if (fields.length === 0) {
+        return res.status(400).json({ error: true, message: "No fields to update" })
+    }
+
+    const sql = `UPDATE movies SET ${fields.join(", ")} WHERE id = ?`
+    values.push(id)
+
+    connection.query(sql, values, (err, result) => {
+        if (err) {
+            return res.status(500).json({ error: true, message: err.message })
+        }
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: true, message: "Movie not found" })
+        }
+
+        res.json({ message: "Movie updated successfully" })
+    })
+}
+
+
 const destroy = (req, res) => {
     const id = Number(req.params.id)
 
@@ -113,5 +151,6 @@ module.exports = {
     show,
     store,
     storeReview,
+    update,
     destroy
 }
